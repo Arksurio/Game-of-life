@@ -7,51 +7,103 @@ import java.util.Random;
 
 
 public class plateau_jeu {
-	public static void main(String[] args){
-
-		int tour = 0;	
-		while (tour < 3) {
+	
+	public static <function> void main(String[] args){
+		
+		int [][] grille = new int [15][15];
+		
+		// EXEMPLE DU CLIGNOTANT
+		grille[7][9] = 1;
+		grille[7][10] = 1;
+		grille[7][11] = 1;
+		
+		int tour = 0;
+		
+		display(grille);
+		
+		while (tour < 100){
+			
+				
 			int nb_tour = ++tour;
-			String Newligne=System.getProperty("line.separator");
-			System.out.print("tour : " + tour + Newligne);
+			String ligne = System.getProperty("line.separator");
+			System.out.print("tour : " + tour + ligne);
 			
-			Random rand = new Random();
-			int nombre1 = rand.nextInt(19);
-			int nombre2 = rand.nextInt(19);
-			int [][] grille = new int [20][20];
-			int a = (grille .length);
-			int b = (grille[0].length);
-			
-			for(int i = 0; i < a; i++) {
-			    for(int j = 0; j < b; j++) {
-			        int x = 0;
-			        if(i % nombre1 == 0) {
-			        	x = 1;
-			        	if (j % nombre2 == 0){
-			        		x = 0;
-			        	}
-			        }
-			        
-			        if ( tour >= 2) { 
-			        	if (j == 0 && i == 1) {
-			        		x = 0;
-					    }
-					}
-			        
-			        grille[i][j] = x;
-			        if (x == x) {
-			            System.out.print(" " + x + " ");
-			        } 
-			        else {
-			        	x = 1;
-			            System.out.print(x + " ");
-			        }
-			    }
-			    	System.out.println();
-			}
-			
+			grille = vivant(grille);
+			display(grille);
+		
 		}
 
 	}
-
-} 
+	
+	private static void display(int[][] table) {
+		
+		for (int[] rangee: table) {
+			
+			for (int cellule: rangee) {
+				
+				if (cellule == 0) {
+					
+					System.out.print(" " + " " + " ");
+				
+				}
+				else {
+					
+					System.out.print(" " + " x " + " ");
+					
+				}
+				
+			}
+			
+			System.out.println();
+		}
+		
+	}
+	
+	
+	private static int[][] vivant(int[][] grille2) {
+		int [][] grille3 = new int [15][15];
+		
+		for(int i = 0; i < grille2.length; i++){
+			
+			for(int j = 0; j <grille2[0].length; j++) {
+				
+		        int cellViv = 0;
+		        
+		        for (int i2 = i-1; i2 <= i+1; i2++) {
+		        	
+		        	for (int j2 = j-1; j2 <= j+1; j2++) {
+		        		
+		        		if (i2 >= 0 && j2 >= 0 && i2 < 15 && j2 < 15) {
+		        			
+		        			if (grille2[i2][j2] == 1) {
+		        				
+		        				cellViv++;
+		        				
+		        			}
+		        			
+		        		}
+		        		
+		        	}
+		        	
+		        }
+		        
+		        if (cellViv < 3 || cellViv > 4) {
+		        	
+		        	grille3[i][j] = 0;
+		        	
+		        } 
+		        
+		        else {
+		        	
+		        	grille3[i][j] = 1;
+		        	
+		        }
+		        
+			}
+			
+		}
+		
+		return grille3;	        
+	}
+	
+}
